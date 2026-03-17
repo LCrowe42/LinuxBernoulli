@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.assignment3.linuxbernoulli"
+    namespace = "com.project2026.linuxbernoulli"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.assignment3.linuxbernoulli"
+        applicationId = "com.project2026.linuxbernoulli"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.10.5")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
