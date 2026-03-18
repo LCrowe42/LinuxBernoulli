@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,18 +43,15 @@ fun Main() {
             TopAppBar(
                 title = {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-                        Image(
-                            painter = painterResource(id = R.drawable.terminalicon),
-                            contentDescription = "Terminal Icon",
-                            modifier = Modifier
-                                .width(32.dp)
-                                .height(32.dp)
-                        )
                         Text(
                             text = "Linux Bernoulli",
                             style = MaterialTheme.typography.displayMedium,
                             color = MaterialTheme.colorScheme.onBackground
                         )
+                    }
+                },
+                actions = {
+                    IconButton( onClick = { println("") } ) {
                         Image(
                             painter = painterResource(id = R.drawable.terminalicon),
                             contentDescription = "Terminal Icon",
@@ -62,7 +60,12 @@ fun Main() {
                                 .height(32.dp)
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
             )
         }
     ) {
@@ -76,6 +79,7 @@ fun Main() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // TODO: Command of the day
+            CotD()
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -83,9 +87,35 @@ fun Main() {
 
             //Spacer?
 
-            // TODO: Favorited commands card
+            // TODO: Favorite commands card
 
             // TODO: Fake shell card
+        }
+    }
+}
+
+@Composable
+fun CotD() {
+    Card(
+        shape = RoundedCornerShape(5.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiary,
+            contentColor = MaterialTheme.colorScheme.onTertiary
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .height(32.dp)
+                .fillMaxWidth(0.8f),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Command of the Day",
+                style = MaterialTheme.typography.titleMedium
+            )
+            /* TODO: add command of the day logic and text item */
         }
     }
 }
