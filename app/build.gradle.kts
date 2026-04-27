@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp)
     implementation(libs.gson)
+    implementation(libs.androidx.compose.ui.text.google.fonts)
     ksp(libs.androidx.room3.compiler)
     implementation(libs.androidx.room3.runtime)
     testImplementation(libs.junit)

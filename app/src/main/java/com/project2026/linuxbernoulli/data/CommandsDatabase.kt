@@ -5,7 +5,7 @@ import com.project2026.linuxbernoulli.data.model.Command
 
 @Dao
 interface CommandsDao {
-    @Query("select id, name, artist, track, is_awesome, icon_url from songs")
+    @Query("select id, name, description, type, favorite from commands")
     suspend fun getCommands(): List<Command>
 
     @Insert

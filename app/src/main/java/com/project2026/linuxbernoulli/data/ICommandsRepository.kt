@@ -7,4 +7,5 @@ interface ICommandsRepository {
     suspend fun deleteCommand(command: Command)
     suspend fun addCommand(command: Command)
     suspend fun toggleFavorite(command: Command)
+    suspend fun cotdSelect(): String
 }

@@ -3,6 +3,8 @@ package com.project2026.linuxbernoulli.data.impl
 import com.project2026.linuxbernoulli.data.ICommandsRepository
 import com.project2026.linuxbernoulli.data.model.Command
 import kotlinx.coroutines.delay
+import java.time.LocalDate
+import kotlin.random.Random
 
 class CommandsRepository : ICommandsRepository {
 
@@ -99,5 +101,23 @@ class CommandsRepository : ICommandsRepository {
                 c
             }
         }
+    }
+
+    override suspend fun cotdSelect(): String {
+
+        if (_commands.isEmpty()) {
+            return "No commands found in database."
+        }
+
+        val today = LocalDate.now()
+        val seed = today.year * 10000 + today.monthValue * 100 + today.dayOfMonth
+
+        val selectedCommand =
+            _commands[Random(seed).nextInt(_commands.size)]
+
+        return "Command: %1\$s\nWhat it Does: %2\$s".format(
+            selectedCommand.name,
+            selectedCommand.description
+        )
     }
 }
