@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.project2026.linuxbernoulli.data.ICommandsRepository
-import com.project2026.linuxbernoulli.data.impl.CommandsRepository
+import com.project2026.linuxbernoulli.data.impl.CommandsDatabaseRepository
 import com.project2026.linuxbernoulli.data.model.Command
 
 class FavoritesViewModel(
@@ -28,7 +28,7 @@ class FavoritesViewModel(
 
     // Local database repository
     private val repository: ICommandsRepository =
-        CommandsRepository()
+        CommandsDatabaseRepository(application)
 
     init {
         viewModelScope.launch {
