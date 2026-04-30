@@ -17,27 +17,32 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project2026.linuxbernoulli.data.model.Command
-import com.project2026.linuxbernoulli.ui.CommandRow
-import com.project2026.linuxbernoulli.ui.favorites.FavoritesViewModel
+import com.project2026.linuxbernoulli.ui.CommandCard
 
 @ExperimentalFoundationApi
 @Composable
 fun FavoritesView(
-    commands: List<Command>,
-    selectedCommand: Command? = null,
     onDelete: () -> Unit,
     onToggle: (Command) -> Unit,
     onSelectCommand: (Command) -> Unit,
-    waiting: Boolean = false,
     dialog: FavoritesViewModel.ShellDialog,
     modifier: Modifier = Modifier
 ) {
+    val viewModel: FavoritesViewModel = viewModel()
+    val commands = viewModel.commands.value
+    val selectedCommand = viewModel.selectedCommand.value
+    val waiting = viewModel.waiting.value
+    LaunchedEffect(Unit) {
+        viewModel.reload()
+    }
     Box(
         contentAlignment = Alignment.Center
     ) {
@@ -107,7 +112,7 @@ fun CommandLibraryUI(
         modifier = modifier
     ) {
         items(commands) { command ->
-            CommandRow(command, onDelete, onToggle, onSelectCommand)
+            CommandCard(command, onDelete, onToggle, onSelectCommand)
         }
     }
 }

@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.sp
 import com.project2026.linuxbernoulli.data.model.Command
 
 @Composable
-fun CommandRow (
+fun CommandCard (
     command: Command,
     onDelete: (Command) -> Unit,
     onToggle: (Command) -> Unit,
@@ -53,10 +53,6 @@ fun CommandRow (
                 modifier = Modifier.weight(1.0f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick= { onDelete(command) }, modifier = Modifier.fillMaxWidth()) {
-                    Text("Delete")
-                }
-                Spacer(modifier = Modifier.padding(bottom=5.dp))
                 Row() {
                     Checkbox(checked = command.favorite, onCheckedChange = { onToggle(command) }, modifier = Modifier.padding(end=5.dp))
                     Text("Favorite")

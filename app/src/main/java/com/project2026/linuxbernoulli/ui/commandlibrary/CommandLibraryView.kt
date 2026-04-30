@@ -22,8 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project2026.linuxbernoulli.data.model.Command
-import com.project2026.linuxbernoulli.ui.CommandRow
+import com.project2026.linuxbernoulli.ui.CommandCard
 
 @ExperimentalFoundationApi
 @Composable
@@ -37,6 +38,7 @@ fun CommandLibraryView(
     dialog: CommandLibraryViewModel.ShellDialog,
     modifier: Modifier = Modifier
 ) {
+    val viewModel: CommandLibraryViewModel = viewModel()
     Box(
         contentAlignment = Alignment.Center
     ) {
@@ -106,7 +108,7 @@ fun CommandLibraryUI(
         modifier = modifier
     ) {
         items(commands) { command ->
-            CommandRow(command, onDelete, onToggle, onSelectCommand)
+            CommandCard(command, onDelete, onToggle, onSelectCommand)
         }
     }
 }

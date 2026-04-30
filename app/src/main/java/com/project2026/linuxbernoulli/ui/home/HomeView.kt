@@ -49,16 +49,12 @@ fun HomeView() {
                 .padding(paddingValues)
                 .padding(16.dp)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CotD(cotd)
 
-            Spacer(modifier = Modifier.height(20.dp))
-
             CommandLibrary()
-
-            Spacer(modifier = Modifier.height(20.dp))
 
             Favorites(favorites.map { c -> c.name })
 

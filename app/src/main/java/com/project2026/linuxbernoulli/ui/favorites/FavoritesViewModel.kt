@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import com.project2026.linuxbernoulli.data.ICommandsRepository
 import com.project2026.linuxbernoulli.data.impl.CommandsDatabaseRepository
 import com.project2026.linuxbernoulli.data.model.Command
+import kotlinx.coroutines.flow.first
 
 class FavoritesViewModel(
     application: Application
@@ -34,8 +35,18 @@ class FavoritesViewModel(
         viewModelScope.launch {
             _waiting.value = true
 
-            _commands.value = repository.getCommands().filter { c -> c.favorite }
+            repository.getCommands().collect { list ->
+                _commands.value = list.filter { it.favorite } // filters favorites
+            }
 
+            _waiting.value = false
+        }
+    }
+
+    fun reload() {
+        viewModelScope.launch {
+            _waiting.value = true
+            _commands.value = repository.getCommands().first().filter { c -> c.favorite }
             _waiting.value = false
         }
     }
@@ -44,7 +55,7 @@ class FavoritesViewModel(
         viewModelScope.launch {
             _waiting.value = true
             repository.addCommand(command)
-            _commands.value = repository.getCommands()
+            _commands.value = repository.getCommands().first()
             _waiting.value = false
         }
     }
@@ -55,7 +66,7 @@ class FavoritesViewModel(
         viewModelScope.launch {
             _waiting.value = true
             repository.deleteCommand(dialog.commandToDelete!!)
-            _commands.value = repository.getCommands()
+            _commands.value = repository.getCommands().first()
             _waiting.value = false
         }
     }
@@ -69,7 +80,7 @@ class FavoritesViewModel(
             )
 
             repository.toggleFavorite(updatedCommand)
-            _commands.value = repository.getCommands()
+            _commands.value = repository.getCommands().first()
 
             _waiting.value = false
         }

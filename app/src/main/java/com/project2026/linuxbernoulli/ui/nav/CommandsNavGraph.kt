@@ -31,7 +31,7 @@ fun CommandsNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = CommandLibrary,
+        startDestination = Home,
         modifier = modifier
     ) {
         composable<CommandLibrary> {
@@ -50,22 +50,14 @@ fun CommandsNavGraph(
         }
         composable<Favorites> {
             val commandsListViewModel: FavoritesViewModel = viewModel(viewModelStoreOwner = LocalActivity.current as MainActivity)
-            val commandList by commandsListViewModel.commands
-            val selectedCommand by commandsListViewModel.selectedCommand
             FavoritesView(
-                commands = commandList,
-                selectedCommand = selectedCommand,
                 onDelete = commandsListViewModel::deleteCommand,
                 onToggle = commandsListViewModel::toggleFavorite,
                 onSelectCommand = commandsListViewModel::selectCommand,
-                waiting = commandsListViewModel.waiting.value,
                 dialog = commandsListViewModel.dialog
             )
         }
         composable<Home> {
-            val commandsListViewModel: HomeViewModel = viewModel(viewModelStoreOwner = LocalActivity.current as MainActivity)
-            val commandList by commandsListViewModel.commands
-            val selectedCommand by commandsListViewModel.selectedCommand
             HomeView()
         }
     }

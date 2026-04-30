@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import com.project2026.linuxbernoulli.data.ICommandsRepository
 import com.project2026.linuxbernoulli.data.impl.CommandsDatabaseRepository
 import com.project2026.linuxbernoulli.data.model.Command
+import kotlinx.coroutines.flow.first
 
 class HomeViewModel(
     application: Application
@@ -41,7 +42,7 @@ class HomeViewModel(
 
             _cotd.value = repository.cotdSelect()
 
-            _commands.value = repository.getCommands().filter { c -> c.favorite }
+            _commands.value = repository.getCommands().first().filter { c -> c.favorite }
 
 
             _waiting.value = false
@@ -52,7 +53,7 @@ class HomeViewModel(
         viewModelScope.launch {
             _waiting.value = true
             repository.addCommand(command)
-            _commands.value = repository.getCommands()
+            _commands.value = repository.getCommands().first()
             _waiting.value = false
         }
     }
@@ -63,7 +64,7 @@ class HomeViewModel(
         viewModelScope.launch {
             _waiting.value = true
             repository.deleteCommand(dialog.commandToDelete!!)
-            _commands.value = repository.getCommands()
+            _commands.value = repository.getCommands().first()
             _waiting.value = false
         }
     }
@@ -77,7 +78,7 @@ class HomeViewModel(
             )
 
             repository.toggleFavorite(updatedCommand)
-            _commands.value = repository.getCommands()
+            _commands.value = repository.getCommands().first()
 
             _waiting.value = false
         }
