@@ -58,7 +58,7 @@ fun CommandsNavGraph(
             )
         }
         composable<Home> {
-            HomeView()
+            HomeView(navController)
         }
     }
 }

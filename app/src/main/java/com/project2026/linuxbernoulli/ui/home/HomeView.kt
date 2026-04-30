@@ -1,5 +1,6 @@
 package com.project2026.linuxbernoulli.ui.home
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,20 +25,29 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.project2026.linuxbernoulli.R
 import java.time.LocalDate
 import kotlin.random.Random
 import com.project2026.linuxbernoulli.ui.home.HomeViewModel
+import com.project2026.linuxbernoulli.ui.nav.CommandLibrary
+import com.project2026.linuxbernoulli.ui.nav.Favorites
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView() {
+fun HomeView(
+    nav: NavHostController
+) {
+    val backStackEntry by nav.currentBackStackEntryAsState()
+    val currentDestination = backStackEntry?.destination
     val viewModel: HomeViewModel = viewModel()
     val cotd = viewModel.cotd.value
     val favorites = viewModel.commands.value
@@ -54,9 +64,9 @@ fun HomeView() {
         ) {
             CotD(cotd)
 
-            CommandLibrary()
+            CommandLibrary(nav)
 
-            Favorites(favorites.map { c -> c.name })
+            Favorites(favorites.map { c -> c.name }, nav)
 
             FakeShell()
         }
@@ -70,6 +80,14 @@ fun CotD(cotd: String) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary,
             contentColor = MaterialTheme.colorScheme.onTertiary
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp,
+            pressedElevation = 2.dp
+        ),
+        border = BorderStroke(
+            width = 3.dp,
+            color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.2f)
         )
     ) {
         Column(
@@ -92,13 +110,26 @@ fun CotD(cotd: String) {
 }
 
 @Composable
-fun CommandLibrary() {
+fun CommandLibrary(nav: NavHostController) {
     Card(
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary,
             contentColor = MaterialTheme.colorScheme.onTertiary
-        )
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp,
+            pressedElevation = 2.dp
+        ),
+        border = BorderStroke(
+            width = 3.dp,
+            color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.2f)
+        ),
+        onClick = {
+            nav.navigate(CommandLibrary) {
+                launchSingleTop = true
+            }
+        }
     ) {
         Column(
             modifier = Modifier
@@ -117,13 +148,26 @@ fun CommandLibrary() {
 }
 
 @Composable
-fun Favorites(favorites: List<String>) {
+fun Favorites(favorites: List<String>, nav: NavHostController) {
     Card(
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary,
             contentColor = MaterialTheme.colorScheme.onTertiary
-        )
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp,
+            pressedElevation = 2.dp
+        ),
+        border = BorderStroke(
+            width = 3.dp,
+            color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.2f)
+        ),
+        onClick = {
+            nav.navigate(Favorites) {
+                launchSingleTop = true
+            }
+        }
     ) {
         Column(
             modifier = Modifier
@@ -167,6 +211,14 @@ fun FakeShell() {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary,
             contentColor = MaterialTheme.colorScheme.onTertiary
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp,
+            pressedElevation = 2.dp
+        ),
+        border = BorderStroke(
+            width = 3.dp,
+            color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.2f)
         )
     ) {
         Column(
@@ -180,7 +232,6 @@ fun FakeShell() {
                 text = "Shell Simulator",
                 style = MaterialTheme.typography.titleMedium
             )
-            /* TODO: intent to move to library page */
         }
     }
 }
