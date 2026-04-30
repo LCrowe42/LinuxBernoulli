@@ -39,6 +39,7 @@ import kotlin.random.Random
 import com.project2026.linuxbernoulli.ui.home.HomeViewModel
 import com.project2026.linuxbernoulli.ui.nav.CommandLibrary
 import com.project2026.linuxbernoulli.ui.nav.Favorites
+import com.project2026.linuxbernoulli.ui.nav.Shell
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +69,7 @@ fun HomeView(
 
             Favorites(favorites.map { c -> c.name }, nav)
 
-            FakeShell()
+            FakeShell(nav)
         }
     }
 }
@@ -205,7 +206,7 @@ fun Favorites(favorites: List<String>, nav: NavHostController) {
 }
 
 @Composable
-fun FakeShell() {
+fun FakeShell(nav: NavHostController) {
     Card(
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(
@@ -219,7 +220,12 @@ fun FakeShell() {
         border = BorderStroke(
             width = 3.dp,
             color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.2f)
-        )
+        ),
+        onClick = {
+            nav.navigate(Shell) {
+                launchSingleTop = true
+            }
+        }
     ) {
         Column(
             modifier = Modifier

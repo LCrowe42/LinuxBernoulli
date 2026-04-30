@@ -21,6 +21,7 @@ import com.project2026.linuxbernoulli.ui.favorites.FavoritesView
 import com.project2026.linuxbernoulli.ui.favorites.FavoritesViewModel
 import com.project2026.linuxbernoulli.ui.home.HomeView
 import com.project2026.linuxbernoulli.ui.home.HomeViewModel
+import com.project2026.linuxbernoulli.ui.shell.ShellView
 
 @OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalFoundationApi
@@ -57,6 +58,9 @@ fun CommandsNavGraph(
         }
         composable<Home> {
             HomeView(navController)
+        }
+        composable<Shell> {
+            ShellView()
         }
     }
 }

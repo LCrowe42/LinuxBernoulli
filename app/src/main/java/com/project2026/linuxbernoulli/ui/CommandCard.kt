@@ -38,8 +38,14 @@ fun CommandCard (
                     modifier = Modifier.padding(5.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Name:", modifier = Modifier.weight(1.0f))
                     Text(command.name, modifier = Modifier.weight(2.0f), fontSize = 28.sp, color = MaterialTheme.colorScheme.secondary)
+                    Column(
+                        modifier = Modifier.weight(1.0f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Checkbox(checked = command.favorite, onCheckedChange = { onToggle(command) }, modifier = Modifier.padding(end=5.dp))
+                        Text("Favorite")
+                    }
                 }
                 Row(
                     modifier = Modifier.padding(5.dp),
@@ -47,15 +53,6 @@ fun CommandCard (
                 ) {
                     Text("Description:", modifier = Modifier.weight(1.0f))
                     Text(command.description, modifier = Modifier.weight(2.0f))
-                }
-            }
-            Column(
-                modifier = Modifier.weight(1.0f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Row() {
-                    Checkbox(checked = command.favorite, onCheckedChange = { onToggle(command) }, modifier = Modifier.padding(end=5.dp))
-                    Text("Favorite")
                 }
             }
         }

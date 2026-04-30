@@ -9,3 +9,5 @@ object Home
 object CommandLibrary
 @Serializable
 object Favorites
+@Serializable
+object Shell
