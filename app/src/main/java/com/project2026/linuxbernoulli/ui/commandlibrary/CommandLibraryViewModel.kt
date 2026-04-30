@@ -31,11 +31,17 @@ class CommandLibraryViewModel(
     private val repository: ICommandsRepository =
         CommandsDatabaseRepository(application)
 
+    private val _searchQuery: MutableState<String> = mutableStateOf("")
+    val searchQuery: State<String> = _searchQuery
+
+    private var _allCommands: List<Command> = listOf()
+
     init {
         viewModelScope.launch {
             _waiting.value = true
 
             repository.getCommands().collect { list ->
+                _allCommands = list
                 _commands.value = list
                 _waiting.value = false
             }
@@ -76,6 +82,19 @@ class CommandLibraryViewModel(
             _commands.value = repository.getCommands().first()
 
             _waiting.value = false
+        }
+    }
+
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+        _commands.value = filterCommands(_allCommands, query)
+    }
+
+    private fun filterCommands(commands: List<Command>, query: String): List<Command> {
+        if (query.isBlank()) return commands
+        return commands.filter { c ->
+            c.name.contains(query, ignoreCase = true) ||
+                    c.description.contains(query, ignoreCase = true)
         }
     }
 
