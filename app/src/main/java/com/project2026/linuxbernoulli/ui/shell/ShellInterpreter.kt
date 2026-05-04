@@ -1,12 +1,13 @@
 package com.project2026.linuxbernoulli.ui.shell
 
+import java.util.Scanner
 import com.project2026.linuxbernoulli.data.model.Command
 
 class ShellInterpreter {
 
     fun parseCommand(input: String): String {
         val firstArg = input.substringBefore(" ")
-        val remainingArgs = input.substringAfter(" ")
+        val remainingArgs = input.substringAfter(" ", "")
         val output = when (firstArg) {
             "help" -> help()
             "ls" -> ls()
@@ -67,11 +68,11 @@ class ShellInterpreter {
         return output;
     }
 
-    //most of the below functions are place holders awaiting more thorough implementation
+    //many  of the below functions are place holders awaiting more thorough implementation
 
     fun ls(): String {
-        return "dev             home            media           opt             root            sys             usr\n" +
-                "etc             lib             mnt             proc            run             tmp             var";
+        return "home            etc             var            usr             bin" +
+                "            media             tmp             example1.txt             example2.txt";
     }
 
     fun cd(args: String): String {
@@ -106,18 +107,59 @@ class ShellInterpreter {
     }
 
     fun touch(args: String): String {
-        // Todo implement
-        return "Command not implemented"
+        if (!args.matches(Regex("^\\w+(\\s+\\w+)*$"))) {return "Usage: touch <file1> [<file2> ...]"}
+        val sc = Scanner(args)
+        val output = buildString {
+            while (sc.hasNext()) {
+                appendLine("You just created a file named ${sc.next()}.")
+            }
+        }
+        return output
     }
 
     fun cat(args: String): String {
-        // Todo implement
-        return "Command not implemented"
+        when (args) {
+            "example1.txt" -> {
+                return ("This is an example file.\n" +
+                        "With some text lines\n" +
+                        "And some more text\n")
+            }
+
+            "example2.txt" -> {
+                return ("This is another example file.\n" +
+                        "With some more text lines\n" +
+                        "And even more text\n")
+            }
+
+            "example1.txt example2.txt" -> {
+                return ("This is an example file.\n" +
+                        "With some text lines\n" +
+                        "And some more text\n\n" +
+                        "This is another example file.\n" +
+                        "With some more text lines\n" +
+                        "And even more text\n")
+            }
+
+            "example2.txt example1.txt" -> {
+                return ("This is another example file.\n" +
+                        "With some more text lines\n" +
+                        "And even more text\n\n" +
+                        "This is an example file.\n" +
+                        "With some text lines\n" +
+                        "And some more text\n")
+            }
+
+            else -> {
+                return "Usage: cat <file1> [<file2> ...]\n[Hint: try 'cat example1.txt']"
+            }
+        }
     }
 
     fun grep(args: String): String {
-        // Todo implement
-        return "Command not implemented"
+        if (!args.matches(Regex("""^"[^"]+"\s+[\w.]+$"""))) {return "Usage: grep \"<pattern>\" <file>"}
+        val pattern = args.substringBefore(" ")
+        val source = args.substringAfter(" ")
+        return "You just searched for $pattern in $source."
     }
 
     fun find(args: String): String {
