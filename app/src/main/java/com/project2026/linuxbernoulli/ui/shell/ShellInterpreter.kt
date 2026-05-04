@@ -9,29 +9,29 @@ class ShellInterpreter {
         val remainingArgs = input.substringAfter(" ")
         val output = when (firstArg) {
             "help" -> help()
-            "ls" -> "file1.txt file2.txt"
+            "ls" -> ls()
             "cd" -> cd(remainingArgs)
-            "pwd" -> TODO()
-            "mkdir" -> TODO()
-            "rm" -> TODO()
-            "cp" -> TODO()
-            "mv" -> TODO()
-            "touch" -> TODO()
-            "cat" -> TODO()
-            "grep" -> TODO()
-            "find" -> TODO()
-            "chmod" -> TODO()
-            "chown" -> TODO()
-            "sudo" -> TODO()
-            "apt" -> TODO()
-            "ps" -> TODO()
-            "kill" -> TODO()
-            "top" -> TODO()
-            "df" -> TODO()
-            "free" -> TODO()
+            "pwd" -> pwd()
+            "mkdir" -> mkdir(remainingArgs)
+            "rm" -> rm(remainingArgs)
+            "cp" -> cp(remainingArgs)
+            "mv" -> mv(remainingArgs)
+            "touch" -> touch(remainingArgs)
+            "cat" -> cat(remainingArgs)
+            "grep" -> grep(remainingArgs)
+            "find" -> find(remainingArgs)
+            "chmod" -> chmod(remainingArgs)
+            "chown" -> chown(remainingArgs)
+            "sudo" -> sudo(remainingArgs)
+            "apt" -> apt(remainingArgs)
+            "ps" -> ps(remainingArgs)
+            "kill" -> kill(remainingArgs)
+            "top" -> top(remainingArgs)
+            "df" -> df(remainingArgs)
+            "free" -> free(remainingArgs)
             "echo" -> echo(remainingArgs)
-            "ping" -> TODO()
-            "ssh" -> TODO()
+            "ping" -> ping(remainingArgs)
+            "ssh" -> ssh(remainingArgs)
             else -> return "-bash: $firstArg: command not found"
         }
         return output;
@@ -67,12 +67,117 @@ class ShellInterpreter {
         return output;
     }
 
+    fun ls(): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
     fun cd(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun pwd(): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun mkdir(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun rm(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun cp(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun mv(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun touch(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun cat(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun grep(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun find(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun chmod(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun chown(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun sudo(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun apt(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun ps(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun kill(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun top(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun df(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun free(args: String): String {
         // Todo implement
         return "Command not implemented"
     }
 
     fun echo(args: String): String {
         return args
+    }
+
+    fun ping(args: String): String {
+        // Todo implement
+        return "Command not implemented"
+    }
+
+    fun ssh(args: String): String {
+        // Todo implement
+        return "Command not implemented"
     }
 }
