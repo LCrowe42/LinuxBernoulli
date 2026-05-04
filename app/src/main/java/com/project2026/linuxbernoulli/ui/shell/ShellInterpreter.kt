@@ -67,39 +67,42 @@ class ShellInterpreter {
         return output;
     }
 
+    //most of the below functions are place holders awaiting more thorough implementation
+
     fun ls(): String {
-        // Todo implement
-        return "Command not implemented"
+        return "dev             home            media           opt             root            sys             usr\n" +
+                "etc             lib             mnt             proc            run             tmp             var";
     }
 
     fun cd(args: String): String {
-        // Todo implement
-        return "Command not implemented"
+        return "You just changed the working directory to $args";
     }
 
     fun pwd(): String {
-        // Todo implement
-        return "Command not implemented"
+        return "/";
     }
 
     fun mkdir(args: String): String {
-        // Todo implement
-        return "Command not implemented"
+        return "You just created a directory named $args."
     }
 
     fun rm(args: String): String {
-        // Todo implement
-        return "Command not implemented"
+        return "You just deleted a file named $args. Careful!"
     }
 
     fun cp(args: String): String {
-        // Todo implement
-        return "Command not implemented"
+        return "You just copied a file named $args."
     }
 
     fun mv(args: String): String {
-        // Todo implement
-        return "Command not implemented"
+        try {
+            if (!args.matches(Regex("^\\w+\\s+\\w+$"))) {return "Usage: mv <source> <destination>"}
+            val source = args.substringBefore(" ")
+            val destination = args.substringAfter(" ")
+            return "You just moved a file named $source to $destination"
+        } catch (e: Exception) {
+            return "Usage: mv <source> <destination>"
+        }
     }
 
     fun touch(args: String): String {
