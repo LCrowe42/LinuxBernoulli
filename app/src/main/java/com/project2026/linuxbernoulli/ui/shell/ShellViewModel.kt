@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import com.project2026.linuxbernoulli.data.ICommandsRepository
 import com.project2026.linuxbernoulli.data.impl.CommandsDatabaseRepository
+import com.project2026.linuxbernoulli.ui.shell.ShellInterpreter
 
 data class ShellLine(val text: String, val isInput: Boolean)
 
@@ -17,6 +18,7 @@ class ShellViewModel(
     private val _lines: MutableState<List<ShellLine>> = mutableStateOf(listOf(
         ShellLine("Linux Bernoulli Shell Simulator", isInput = false),
         ShellLine("Type a command and press Enter.", isInput = false),
+        ShellLine("Type 'help' for a list of commands.", isInput = false)
     ))
     val lines: State<List<ShellLine>> = _lines
 
@@ -34,14 +36,15 @@ class ShellViewModel(
         val raw = _input.value.trim()
         if (raw.isEmpty()) return
 
-        // Echo the input as a shell prompt line
-        _lines.value = _lines.value + ShellLine("$ $raw", isInput = true)
+        // copy input to line
+        _lines.value += ShellLine("$ $raw", isInput = true)
 
         // Clear input
         _input.value = ""
 
-        // TODO: process command
-        _lines.value = _lines.value + ShellLine("Command not yet implemented.", isInput = false)
+        val interpreter = ShellInterpreter()
+        val lineText = interpreter.parseCommand(raw)
+        _lines.value += ShellLine(lineText, isInput = false)
     }
 
     fun onClear() {
