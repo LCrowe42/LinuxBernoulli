@@ -59,11 +59,13 @@ class CommandLibraryViewModel(
         }
     }
 
-    fun useCommand() {
-        if (dialog.commandToUse == null) return
+    fun deleteCommand() {
+        if (dialog.commandToDelete == null) return
 
         viewModelScope.launch {
             _waiting.value = true
+            repository.deleteCommand(dialog.commandToDelete!!)
+            _commands.value = repository.getCommands().first()
             _waiting.value = false
         }
     }
@@ -98,23 +100,22 @@ class CommandLibraryViewModel(
 
     fun selectCommand(command: Command) {
         _selected.value = command
-        dialog.showDialog(command)
     }
 
     class ShellDialog {
         private val _showDialog: MutableState<Boolean> = mutableStateOf(false)
         val showDialog: State<Boolean> = _showDialog
 
-        var commandToUse: Command? = null
+        var commandToDelete: Command? = null
             private set
 
         fun hideDialog() {
-            commandToUse = null
+            commandToDelete = null
             _showDialog.value = false
         }
 
         fun showDialog(command: Command) {
-            commandToUse = command
+            commandToDelete = command
             _showDialog.value = true
         }
     }

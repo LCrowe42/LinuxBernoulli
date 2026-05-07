@@ -40,7 +40,7 @@ fun CommandsNavGraph(
             val selectedCommand by commandsListViewModel.selectedCommand
             CommandLibraryView(
                 selectedCommand = selectedCommand,
-                onDelete = commandsListViewModel::useCommand,
+                onDelete = commandsListViewModel::deleteCommand,
                 onToggle = commandsListViewModel::toggleFavorite,
                 onSelectCommand = commandsListViewModel::selectCommand,
                 waiting = commandsListViewModel.waiting.value,
