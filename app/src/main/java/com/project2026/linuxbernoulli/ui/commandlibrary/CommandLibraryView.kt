@@ -68,7 +68,6 @@ fun CommandLibraryView(
                 selectedCommand = selectedCommand,
                 onDelete = dialog::showDialog,
                 onToggle = onToggle,
-                onSelectCommand = onSelectCommand,
                 modifier = modifier.alpha(alpha)
             )
         } else {
@@ -112,13 +111,12 @@ fun CommandLibraryUI(
     commands: List<Command>,
     onDelete: (Command) -> Unit,
     onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
     ) {
         items(commands) { command ->
-            CommandCard(command, onDelete, onToggle, onSelectCommand)
+            CommandCard(command, onDelete, onToggle)
         }
     }
 }
@@ -162,7 +160,6 @@ fun Portrait(
             commands = commands,
             onDelete = onDelete,
             onToggle = onToggle,
-            onSelectCommand = onSelectCommand
         )
     }
 }
@@ -176,7 +173,6 @@ fun Landscape(
     selectedCommand: Command? = null,
     onDelete: (Command) -> Unit,
     onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -201,7 +197,6 @@ fun Landscape(
             commands = commands,
             onDelete = onDelete,
             onToggle = onToggle,
-            onSelectCommand = onSelectCommand
         )
     }
 }

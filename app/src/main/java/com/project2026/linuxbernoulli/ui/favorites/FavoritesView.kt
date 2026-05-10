@@ -32,7 +32,6 @@ import com.project2026.linuxbernoulli.ui.CommandCard
 fun FavoritesView(
     onDelete: () -> Unit,
     onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit,
     dialog: FavoritesViewModel.ShellDialog,
     modifier: Modifier = Modifier
 ) {
@@ -64,7 +63,6 @@ fun FavoritesView(
                 selectedCommand = selectedCommand,
                 onDelete = dialog::showDialog,
                 onToggle = onToggle,
-                onSelectCommand = onSelectCommand,
                 modifier = modifier.alpha(alpha)
             )
         } else {
@@ -73,7 +71,6 @@ fun FavoritesView(
                 commands = commands,
                 onDelete = dialog::showDialog,
                 onToggle = onToggle,
-                onSelectCommand = onSelectCommand,
                 modifier = modifier.alpha(alpha)
             )
         }
@@ -106,13 +103,12 @@ fun CommandLibraryUI(
     commands: List<Command>,
     onDelete: (Command) -> Unit,
     onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
     ) {
         items(commands) { command ->
-            CommandCard(command, onDelete, onToggle, onSelectCommand)
+            CommandCard(command, onDelete, onToggle)
         }
     }
 }
@@ -123,7 +119,6 @@ fun Portrait(
     commands: List<Command>,
     onDelete: (Command) -> Unit,
     onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -131,8 +126,7 @@ fun Portrait(
         CommandLibraryUI(
             commands = commands,
             onDelete = onDelete,
-            onToggle = onToggle,
-            onSelectCommand = onSelectCommand
+            onToggle = onToggle
         )
     }
 }
@@ -143,8 +137,7 @@ fun Landscape(
     commands: List<Command>,
     selectedCommand: Command? = null,
     onDelete: (Command) -> Unit,
-    onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit
+    onToggle: (Command) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -165,7 +158,6 @@ fun Landscape(
             commands = commands,
             onDelete = onDelete,
             onToggle = onToggle,
-            onSelectCommand = onSelectCommand
         )
     }
 }

@@ -1,5 +1,7 @@
 package com.project2026.linuxbernoulli.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,17 +9,24 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
 import com.project2026.linuxbernoulli.data.model.Command
 
 @Composable
 fun CommandCard (
     command: Command,
     onDelete: (Command) -> Unit,
-    onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit,
+    onToggle: (Command) -> Unit
 ) {
+    val context = LocalContext.current
+
+    fun openCommandPage(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context.startActivity(intent)
+    }
     Card(
         shape = RoundedCornerShape(5.dp),
         modifier = Modifier
@@ -27,7 +36,7 @@ fun CommandCard (
         Row(
             modifier = Modifier
                 .padding(16.dp)
-                .clickable { onSelectCommand(command) },
+                .clickable { openCommandPage("https://www.geeksforgeeks.org/linux-unix/linux-commands/") },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
