@@ -39,10 +39,7 @@ fun CommandsNavGraph(
             val commandsListViewModel: CommandLibraryViewModel = viewModel(viewModelStoreOwner = LocalActivity.current as MainActivity)
             val selectedCommand by commandsListViewModel.selectedCommand
             CommandLibraryView(
-                selectedCommand = selectedCommand,
-                onDelete = commandsListViewModel::deleteCommand,
                 onToggle = commandsListViewModel::toggleFavorite,
-                onSelectCommand = commandsListViewModel::selectCommand,
                 waiting = commandsListViewModel.waiting.value,
                 dialog = commandsListViewModel.dialog
             )
@@ -50,9 +47,7 @@ fun CommandsNavGraph(
         composable<Favorites> {
             val commandsListViewModel: FavoritesViewModel = viewModel(viewModelStoreOwner = LocalActivity.current as MainActivity)
             FavoritesView(
-                onDelete = commandsListViewModel::deleteCommand,
                 onToggle = commandsListViewModel::toggleFavorite,
-                onSelectCommand = commandsListViewModel::selectCommand,
                 dialog = commandsListViewModel.dialog
             )
         }

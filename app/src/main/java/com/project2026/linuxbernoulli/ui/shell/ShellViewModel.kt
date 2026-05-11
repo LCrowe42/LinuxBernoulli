@@ -15,7 +15,7 @@ class ShellViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _lines: MutableState<List<ShellLine>> = mutableStateOf(listOf(
+    private val _lines: MutableState<List<ShellLine>> = mutableStateOf(listOf( //list of shell lines to display initialized with three prompting lines
         ShellLine("Linux Bernoulli Shell Simulator", isInput = false),
         ShellLine("Type a command and press Enter.", isInput = false),
         ShellLine("Type 'help' for a list of commands.", isInput = false)

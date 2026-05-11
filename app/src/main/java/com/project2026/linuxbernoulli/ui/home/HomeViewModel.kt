@@ -69,21 +69,6 @@ class HomeViewModel(
         }
     }
 
-    fun toggleFavorite(command: Command) {
-        viewModelScope.launch {
-            _waiting.value = true
-
-            val updatedCommand = command.copy(
-                favorite = !command.favorite
-            )
-
-            repository.toggleFavorite(updatedCommand)
-            _commands.value = repository.getCommands().first()
-
-            _waiting.value = false
-        }
-    }
-
     fun selectCommand(command: Command) {
         _selected.value = command
     }

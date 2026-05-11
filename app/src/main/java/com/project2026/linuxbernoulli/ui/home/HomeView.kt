@@ -47,8 +47,6 @@ import com.project2026.linuxbernoulli.ui.nav.Shell
 fun HomeView(
     nav: NavHostController
 ) {
-    val backStackEntry by nav.currentBackStackEntryAsState()
-    val currentDestination = backStackEntry?.destination
     val viewModel: HomeViewModel = viewModel()
     val cotd = viewModel.cotd.value
     val favorites = viewModel.commands.value

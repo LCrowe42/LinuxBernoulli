@@ -1,6 +1,8 @@
 package com.project2026.linuxbernoulli.ui.favorites
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,17 +24,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project2026.linuxbernoulli.data.model.Command
 import com.project2026.linuxbernoulli.ui.CommandCard
+import com.project2026.linuxbernoulli.ui.commandlibrary.CommandLibraryViewModel
 
 @ExperimentalFoundationApi
 @Composable
 fun FavoritesView(
-    onDelete: () -> Unit,
     onToggle: (Command) -> Unit,
-    dialog: FavoritesViewModel.ShellDialog,
+    dialog: FavoritesViewModel.BrowserDialog,
     modifier: Modifier = Modifier
 ) {
     val viewModel: FavoritesViewModel = viewModel()
@@ -46,9 +49,8 @@ fun FavoritesView(
         contentAlignment = Alignment.Center
     ) {
         if(dialog.showDialog.value) {
-            ShellDialog(
+            BrowserDialog(
                 onDismiss = dialog::hideDialog,
-                onDelete = onDelete
             )
         }
         val alpha = when(waiting) {
@@ -61,7 +63,7 @@ fun FavoritesView(
             Landscape(
                 commands = commands,
                 selectedCommand = selectedCommand,
-                onDelete = dialog::showDialog,
+                onCardClick = dialog::showDialog,
                 onToggle = onToggle,
                 modifier = modifier.alpha(alpha)
             )
@@ -69,7 +71,7 @@ fun FavoritesView(
             // portrait
             Portrait(
                 commands = commands,
-                onDelete = dialog::showDialog,
+                onCardClick = dialog::showDialog,
                 onToggle = onToggle,
                 modifier = modifier.alpha(alpha)
             )
@@ -82,16 +84,26 @@ fun FavoritesView(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ShellDialog(
+fun BrowserDialog( //changed shell dialog to be browser dialog which uses intent to open browser after prompting user
     onDismiss: () -> Unit,
-    onDelete: () -> Unit
 ) {
+    val context = LocalContext.current
+    val viewModel: CommandLibraryViewModel = viewModel()
     AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { TextButton(onClick = { onDelete(); onDismiss() }) { Text("Open") } },
+        confirmButton = {
+            TextButton(onClick = {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.geeksforgeeks.org/linux-unix/linux-commands/")
+                )
+                context.startActivity(intent)
+                viewModel.browserDialog.hideDialog()
+            }) { Text("Open") }
+        },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel")} },
         text = {
-            Text("Open Shell?", style = MaterialTheme.typography.titleLarge)
+            Text("Open Geeks4Geeks command library?", style = MaterialTheme.typography.titleLarge)
         }
     )
 }
@@ -101,14 +113,14 @@ fun ShellDialog(
 fun CommandLibraryUI(
     modifier: Modifier = Modifier,
     commands: List<Command>,
-    onDelete: (Command) -> Unit,
+    onCardClick: (Command) -> Unit,
     onToggle: (Command) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier
     ) {
         items(commands) { command ->
-            CommandCard(command, onDelete, onToggle)
+            CommandCard(command, onToggle, onCardClick)
         }
     }
 }
@@ -117,7 +129,7 @@ fun CommandLibraryUI(
 fun Portrait(
     modifier: Modifier = Modifier,
     commands: List<Command>,
-    onDelete: (Command) -> Unit,
+    onCardClick: (Command) -> Unit,
     onToggle: (Command) -> Unit,
 ) {
     Column(
@@ -125,7 +137,7 @@ fun Portrait(
     ) {
         CommandLibraryUI(
             commands = commands,
-            onDelete = onDelete,
+            onCardClick = onCardClick,
             onToggle = onToggle
         )
     }
@@ -136,7 +148,7 @@ fun Landscape(
     modifier: Modifier = Modifier,
     commands: List<Command>,
     selectedCommand: Command? = null,
-    onDelete: (Command) -> Unit,
+    onCardClick: (Command) -> Unit,
     onToggle: (Command) -> Unit
 ) {
     Row(
@@ -156,7 +168,7 @@ fun Landscape(
         CommandLibraryUI(
             modifier = Modifier.weight(1.0f),
             commands = commands,
-            onDelete = onDelete,
+            onCardClick = onCardClick,
             onToggle = onToggle,
         )
     }

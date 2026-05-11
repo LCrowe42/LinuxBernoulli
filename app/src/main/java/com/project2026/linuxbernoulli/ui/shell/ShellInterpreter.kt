@@ -3,8 +3,15 @@ package com.project2026.linuxbernoulli.ui.shell
 import java.util.Scanner
 import com.project2026.linuxbernoulli.data.model.Command
 
+/** Class used to simulate a shell interpreter.
+ * Its main method is parseCommand which takes a
+ * command as a string and returns a simulated output.  */
 class ShellInterpreter {
 
+    /** Function to parse a command and return the simulated output
+     * @param input The command to parse
+     * @return The simulated output of the command
+     */
     fun parseCommand(input: String): String {
         val firstArg = input.substringBefore(" ")
         val remainingArgs = input.substringAfter(" ", "")

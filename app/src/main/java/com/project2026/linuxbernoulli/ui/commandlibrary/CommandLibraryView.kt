@@ -1,6 +1,8 @@
 package com.project2026.linuxbernoulli.ui.commandlibrary
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.project2026.linuxbernoulli.data.model.Command
@@ -34,12 +37,9 @@ import com.project2026.linuxbernoulli.ui.CommandCard
 @ExperimentalFoundationApi
 @Composable
 fun CommandLibraryView(
-    selectedCommand: Command? = null,
-    onDelete: () -> Unit,
     onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit,
     waiting: Boolean = false,
-    dialog: CommandLibraryViewModel.ShellDialog,
+    dialog: CommandLibraryViewModel.BrowserDialog,
     modifier: Modifier = Modifier
 ) {
     val viewModel: CommandLibraryViewModel = viewModel()
@@ -49,9 +49,8 @@ fun CommandLibraryView(
         contentAlignment = Alignment.Center
     ) {
         if(dialog.showDialog.value) {
-            ShellDialog(
+            BrowserDialog(
                 onDismiss = dialog::hideDialog,
-                onDelete = onDelete
             )
         }
         val alpha = when(waiting) {
@@ -65,8 +64,7 @@ fun CommandLibraryView(
                 commands = commands,
                 searchQuery = searchQuery,
                 onSearchQueryChanged = viewModel::onSearchQueryChanged,
-                selectedCommand = selectedCommand,
-                onDelete = dialog::showDialog,
+                onCardClick = dialog::showDialog,
                 onToggle = onToggle,
                 modifier = modifier.alpha(alpha)
             )
@@ -76,9 +74,8 @@ fun CommandLibraryView(
                 commands = commands,
                 searchQuery = searchQuery,
                 onSearchQueryChanged = viewModel::onSearchQueryChanged,
-                onDelete = dialog::showDialog,
+                onCardClick = dialog::showDialog,
                 onToggle = onToggle,
-                onSelectCommand = onSelectCommand,
                 modifier = modifier.alpha(alpha),
             )
         }
@@ -90,16 +87,26 @@ fun CommandLibraryView(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ShellDialog(
+fun BrowserDialog( //changed shell dialog to be browser dialog which uses intent to open browser after prompting user
     onDismiss: () -> Unit,
-    onDelete: () -> Unit
 ) {
+    val context = LocalContext.current
+    val viewModel: CommandLibraryViewModel = viewModel()
     AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { TextButton(onClick = { onDelete(); onDismiss() }) { Text("Open") } },
+        confirmButton = {
+            TextButton(onClick = {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.geeksforgeeks.org/linux-unix/linux-commands/")
+                )
+                context.startActivity(intent)
+                viewModel.browserDialog.hideDialog()
+            }) { Text("Open") }
+        },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel")} },
         text = {
-            Text("Open Shell?", style = MaterialTheme.typography.titleLarge)
+            Text("Open Geeks4Geeks command library?", style = MaterialTheme.typography.titleLarge)
         }
     )
 }
@@ -109,14 +116,14 @@ fun ShellDialog(
 fun CommandLibraryUI(
     modifier: Modifier = Modifier,
     commands: List<Command>,
-    onDelete: (Command) -> Unit,
     onToggle: (Command) -> Unit,
+    onCardClick: (Command) -> Unit //passing down the intent to open browser
 ) {
     LazyColumn(
         modifier = modifier
     ) {
         items(commands) { command ->
-            CommandCard(command, onDelete, onToggle)
+            CommandCard(command, onToggle, onCardClick)
         }
     }
 }
@@ -145,9 +152,8 @@ fun Portrait(
     commands: List<Command>,
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
-    onDelete: (Command) -> Unit,
+    onCardClick: (Command) -> Unit,
     onToggle: (Command) -> Unit,
-    onSelectCommand: (Command) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -158,8 +164,8 @@ fun Portrait(
         )
         CommandLibraryUI(
             commands = commands,
-            onDelete = onDelete,
             onToggle = onToggle,
+            onCardClick = onCardClick
         )
     }
 }
@@ -171,7 +177,7 @@ fun Landscape(
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
     selectedCommand: Command? = null,
-    onDelete: (Command) -> Unit,
+    onCardClick: (Command) -> Unit,
     onToggle: (Command) -> Unit,
 ) {
     Row(
@@ -195,8 +201,8 @@ fun Landscape(
         CommandLibraryUI(
             modifier = Modifier.weight(1.0f),
             commands = commands,
-            onDelete = onDelete,
             onToggle = onToggle,
+            onCardClick = onCardClick
         )
     }
 }

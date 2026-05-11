@@ -62,7 +62,7 @@ fun ShellView() {
 
         HorizontalDivider(color = Color(0xFF30363D))
 
-        // Input row
+        // input row
         Row(
             modifier = Modifier
                 .fillMaxWidth()

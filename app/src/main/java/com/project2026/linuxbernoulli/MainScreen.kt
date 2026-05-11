@@ -3,6 +3,7 @@ package com.project2026.linuxbernoulli
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import com.project2026.linuxbernoulli.ui.nav.CommandLibrary
 import com.project2026.linuxbernoulli.ui.nav.CommandsNavGraph
 import com.project2026.linuxbernoulli.ui.nav.Favorites
 import com.project2026.linuxbernoulli.ui.nav.Home
+import com.project2026.linuxbernoulli.ui.nav.Shell
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -43,7 +45,7 @@ fun MainScreen() {
     val nav = rememberNavController()
     Scaffold(
         topBar = {
-            TopBar()
+            TopBar(nav = nav)
         },
         bottomBar = {
             BottomBar(nav = nav)
@@ -55,7 +57,9 @@ fun MainScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar() {
+private fun TopBar(
+    nav: NavHostController //takes in nav to navigate to shell when icon is clicked
+) {
     TopAppBar(
         title = {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
@@ -65,11 +69,12 @@ private fun TopBar() {
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Image(
-                    painter = painterResource(id = R.drawable.terminalicon),
+                    painter = painterResource(id = R.drawable.ic_launcher),
                     contentDescription = "Terminal Icon",
                     modifier = Modifier
                         .width(32.dp)
                         .height(32.dp)
+                        .clickable(onClick = { nav.navigate(Shell) })
                 )
             }
         },
@@ -84,7 +89,7 @@ private fun TopBar() {
 
 @Composable
 private fun BottomBar(
-    nav: NavHostController
+    nav: NavHostController //takes in nav to act as navbar
 ) {
     val backStackEntry by nav.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination

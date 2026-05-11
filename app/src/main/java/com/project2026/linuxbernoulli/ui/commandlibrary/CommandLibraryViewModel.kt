@@ -19,13 +19,14 @@ class CommandLibraryViewModel(
     private val _commands: MutableState<List<Command>> = mutableStateOf(listOf())
     val commands: State<List<Command>> = _commands
 
+    val browserDialog: BrowserDialog = BrowserDialog()
     private val _selected: MutableState<Command?> = mutableStateOf(null)
     val selectedCommand: State<Command?> = _selected
 
     private val _waiting: MutableState<Boolean> = mutableStateOf(false)
     val waiting: State<Boolean> = _waiting
 
-    val dialog: ShellDialog = ShellDialog()
+    val dialog: BrowserDialog = BrowserDialog()
 
     // Local database repository
     private val repository: ICommandsRepository =
@@ -59,16 +60,6 @@ class CommandLibraryViewModel(
         }
     }
 
-    fun deleteCommand() {
-        if (dialog.commandToDelete == null) return
-
-        viewModelScope.launch {
-            _waiting.value = true
-            repository.deleteCommand(dialog.commandToDelete!!)
-            _commands.value = repository.getCommands().first()
-            _waiting.value = false
-        }
-    }
 
     fun toggleFavorite(command: Command) {
         viewModelScope.launch {
@@ -102,20 +93,20 @@ class CommandLibraryViewModel(
         _selected.value = command
     }
 
-    class ShellDialog {
+    class BrowserDialog { //dialog to ask user to open browser
         private val _showDialog: MutableState<Boolean> = mutableStateOf(false)
         val showDialog: State<Boolean> = _showDialog
 
-        var commandToDelete: Command? = null
+        var commandToOpen: Command? = null
             private set
 
         fun hideDialog() {
-            commandToDelete = null
+            commandToOpen = null
             _showDialog.value = false
         }
 
         fun showDialog(command: Command) {
-            commandToDelete = command
+            commandToOpen = command
             _showDialog.value = true
         }
     }
